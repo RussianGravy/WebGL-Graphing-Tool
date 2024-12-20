@@ -1,0 +1,15 @@
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+h1 {
+    margin: auto;
+    width: fit-content;
+}
+
+canvas{
+    border: solid 1px black;
+    margin: 20px auto 0 auto;
+    width: 75vw;
+}

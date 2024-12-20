@@ -1,0 +1,127 @@
+body {
+    display: flex;
+    flex-direction: row;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+    width: 50vw;
+    align-items: center;
+}
+
+h1 {
+    width: fit-content;
+}
+
+canvas{
+    border: solid 1px black;
+    margin: 20px auto 0 auto;
+    aspect-ratio: 1/1;
+    width: 100%;
+}
+
+#lines-counter {
+    font-size:large;
+}
+
+#lines-container {
+    width: 100%;
+    max-height: 77vh;
+    overflow-y: scroll;
+}
+
+.line {
+    width: 80%;
+    height: 60px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background-color: #F9F9F9;
+    padding: 2px 20px 2px 20px;
+    margin: 20px auto 20px auto;
+    /* align-items: center; */
+    border: solid black 0.5px;
+    border-radius: 5px;
+}
+.line-hover-message{
+    opacity: 0;
+    color: darkgray;
+    transition: opacity 0.15s 0s;
+}
+
+.line:hover .line-hover-message {
+    opacity: 1;
+}
+
+.line-header {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.line h3 {
+    flex-grow: 1;
+}
+
+
+
+.line-points-container {
+    margin: 0px 0 10px 0;
+}
+
+.line-points-container div {
+    font-size: large;
+    /* align-items: center; */
+    /* display: flex;
+    flex-direction: row; */
+}
+
+.line-points-container input {
+    margin: 0 5px 0 5px;
+    width: 35px;
+}
+
+.line-points-container button { 
+    margin: 0 5px 0 5px;
+    cursor: pointer;
+    padding: 6px 16px 6px 16px;
+    color: white;
+    background-color: black;
+    border-radius: 15px;
+    font-size: medium;
+}
+
+.points {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.individual-point {
+    margin-top: 8px;
+    margin-bottom: 22px;
+}
+
+#new-line-button {
+    cursor: pointer;
+    padding: 8px 20px 8px 20px;
+    color: white;
+    background-color: black;
+    border-radius: 5px;
+    font-size: x-large;
+    
+}
+
+button {
+    all: unset;
+    cursor: pointer;
+    /* transition: transform 0.15s 0s; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+}
+
+button:hover {
+    transform: scale(0.95);
+}
