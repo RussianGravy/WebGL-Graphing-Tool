@@ -1,19 +1,23 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/graph.css" />
   </head>
   <body>
-    <section>
+    <section id="graph-container">
       <!-- <h1>Basic Example</h1> -->
       <canvas id="gl-window"></canvas>
+      <canvas id="graph-lines"></canvas>
     </section>
     <section>
       <p id="lines-counter">You have <b>0</b> lines on your graph</p>
       <div id="lines-container"></div>
       <button onclick="createNewLine();" id="new-line-button">New Line</button>
     </section>
-    <script src="js/main.js"></script>
+    <script src="js/drawGraph.js"></script>
+    <script src="js/glShaders.js"></script>
     <script src="js/newLine.js"></script>
+    <script src="js/changeLineColor.js"></script>
   </body>
 </html>

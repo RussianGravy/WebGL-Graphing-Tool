@@ -16,10 +16,12 @@ h1 {
 }
 
 canvas{
-    border: solid 1px black;
+    position: absolute;
+    top: 0;
+    right: 0;
     margin: 20px auto 0 auto;
     aspect-ratio: 1/1;
-    width: 100%;
+    width: 90%;
 }
 
 #lines-counter {
@@ -65,14 +67,12 @@ canvas{
     flex-grow: 1;
 }
 
-
-
 .line-points-container {
     margin: 0px 0 10px 0;
 }
 
 .line-points-container div {
-    font-size: large;
+    /* font-size: large; */
     /* align-items: center; */
     /* display: flex;
     flex-direction: row; */
@@ -90,7 +90,7 @@ canvas{
     color: white;
     background-color: black;
     border-radius: 15px;
-    font-size: medium;
+    /* font-size: medium; */
 }
 
 .points {
@@ -101,8 +101,8 @@ canvas{
 }
 
 .individual-point {
-    margin-top: 8px;
-    margin-bottom: 22px;
+    margin-top: 4px;
+    margin-bottom: 18px;
 }
 
 #new-line-button {
@@ -113,6 +113,34 @@ canvas{
     border-radius: 5px;
     font-size: x-large;
     
+}
+
+#title {
+    margin-top: 2px;
+    margin-bottom: 10px;
+}
+
+#color_selector {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: row;
+    font-size: xx-large;
+    text-align: center;
+}
+
+#color_selector button { 
+    border: solid 1.5px black;
+    margin-right: 5px;
+    width: 40px;
+    height: 40px;
+}
+
+#add-point {
+    background-color: rgb(208, 208, 208);
+    border-radius: 5px;
+    padding: 5px;
+    width: fit-content;
+    font-size: medium;
 }
 
 button {

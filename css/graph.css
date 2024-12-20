@@ -1,0 +1,8 @@
+#graph-container {
+    position: relative;
+}
+
+#graph-lines {
+    /* border: solid 1px black; */
+    width: 95%;
+}

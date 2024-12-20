@@ -1,0 +1,3 @@
+function addChangeColorFunction(line, index){
+
+} 

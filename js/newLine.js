@@ -1,28 +1,6 @@
 const linesContainer = document.getElementById("lines-container");
 const linesCounter = document.getElementById("lines-counter");
 
-const NEW_LINE_HTML = [
-  '<div class="line">',
-  '  <div class="line-header">',
-  "    <h3> 'Temporary Line Name' </h3>",
-  '    <button onclick="">',
-  "       <svg",
-  '       xmlns="http://www.w3.org/2000/svg"',
-  '       width="52"',
-  '       height="20"',
-  '       viewBox="0 0 52 20"',
-  '       fill="none"',
-  "       >",
-  '         <path d="M26 0L51.1147 19.5H0.885263L26 0Z" fill="#8F8F8F" />',
-  "       </svg>",
-  "    </button>",
-  "  </div>",
-  '  <div class="line-points-container">',
-  "     ",
-  "  </div>",
-  "</div>",
-].join("\n");
-
 /*
  *   Line Object Fields:
  *   -  name: String,
@@ -32,10 +10,11 @@ const NEW_LINE_HTML = [
  */
 var lines = []; // array of line objects
 
+const colors = ["Red", "Blue", "Green"];
 function createNewLine() {
   lines.push({
     name: "Line " + (lines.length + 1),
-    color: [],
+    color: colors[Math.floor(Math.random() * colors.length)],
     points: [],
     toggle: false,
   });
@@ -51,13 +30,11 @@ function createNewLine() {
   console.log(lines);
 }
 
-const colors = ["Red", "Blue", "Green"];
 function getLineHTML(line) {
-  const thisColor = colors[Math.floor(Math.random() * colors.length)];
   return [
     '<div class="line" id="line-' + lines.length + '">',
     '  <div class="line-header" id="line-header-' + lines.length + '">',
-    '    <h3 style="color:' + thisColor + '">',
+    '    <h3 style="color:' + line.color + '">',
     "       " + line.name,
     "    </h3>",
     '    <h3 class="line-hover-message" id="message-' + lines.length + '">',
@@ -77,18 +54,37 @@ function getLineHTML(line) {
     "      </svg>",
     "    </button>",
     "  </div>",
+    '  <h3 id="title"><u>Color:</u></h3>',
+    '  <div id="color_selector">',
+    '     <button class="color_button" style="background-color: red;">',
+    "        " + (line.color == "Red" ? "X" : ""),
+    "     </button>",
+    '     <button class="color_button" style="background-color: green;">',
+    "        " + (line.color == "Green" ? "X" : ""),
+    "     </button>",
+    '     <button class="color_button" style="background-color: blue;">',
+    "        " + (line.color == "Blue" ? "X" : ""),
+    "     </button>",
+    "  </div>",
     "  <div",
     '  class="line-points-container"',
     '  id="line-points-container-' + lines.length + '"',
     "  >",
     '     <div class="points" id="points-' + lines.length + '">',
-    '        <h4 class="individual-point">Origin: (0, 0)</h4>',
+    '        <h3 id="title"><u>Points:</u></h3>',
+    '        <p class="individual-point"',
+    '        style="color:darkgrey;"',
+    "        >",
+    "           Origin: (0, 0)",
+    "        </p>",
     "     </div>",
-    "     <div>",
+    "     <div",
+    '     id="add-point"',
+    "     >",
     "       New Point:",
     '       ( <input id="x-input-' + lines.length + '"/> ,',
     '       <input id="y-input-' + lines.length + '"/> )',
-    '       <button style="background-color:' + thisColor + '"',
+    '       <button style="background-color:' + line.color + '"',
     '       id="add-point-button-' + lines.length + '"',
     "       >",
     "         Add Point",
@@ -139,21 +135,28 @@ function addCreatePointFunction(line, index) {
   button.addEventListener("click", () => {
     //add point and graph it
     const point = getFixedPoint(Number(x.value), Number(y.value));
-    const color = [1.0, 0.0, 0.0, 1.0];
+    const color =
+      line.color === "Red"
+        ? [1.0, 0.0, 0.0, 1.0]
+        : line.color === "Blue"
+        ? [0.0, 0.0, 1.0, 1.0]
+        : [0.0, 1.0, 0.0, 1.0];
     line.points.push(point.x, point.y);
     addGraph(color, line.points);
     renderGraphs();
     //render html
     container.insertAdjacentHTML(
       "beforeend",
-      '<h4  class="individual-point">Point-' +
-        line.points.length +
+      '<p  class="individual-point">Point ' +
+        line.points.length / 2 +
         ": (" +
-        point.x +
+        x.value +
         ", " +
-        point.y +
-        ")</h4>"
+        y.value +
+        ")</p>"
     );
+    x.value = "";
+    y.value = "";
   });
 }
 
@@ -172,11 +175,11 @@ function getFixedPoint(x, y) {
   new_x += "";
   var end = new_x.length < 4 ? new_x.length : 4;
   console.log(end);
-  new_x = Number(new_x.substring(0, end));
+  // new_x = Number(new_x.substring(0, end));
   new_y += "";
   end = new_y.length < 4 ? new_y.length : 4;
   console.log(end);
-  new_y = Number(new_y.substring(0, end));
+  // new_y = Number(new_y.substring(0, end));
 
   return { x: new_x, y: new_y };
 }

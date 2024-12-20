@@ -63,7 +63,7 @@ const colorLocation = gl.getUniformLocation(program, "uLineColor");
 const graphs = [];
 
 function addGraph(color, points) {
-  graphs.push({ color: color, points: points });
+  graphs.push({ color: color, points: [-1, -1, ...points] });
   console.log("All Graphs: ", graphs);
 }
 
@@ -91,8 +91,8 @@ function renderGraphs() {
 
 // // Example usage
 gl.clearColor(1.0, 1.0, 1.0, 1.0);
-addGraph([1.0, 0.0, 0.0, 1.0], [-0.5, -0.5, 0.5, 0.5]);
-addGraph([0.0, 1.0, 0.0, 1.0], [-0.5, 0.5, 0.5, -0.5]);
-addGraph([0.0, 0.0, 1.0, 1.0], [-0.8, -0.2, 0.8, 0.2]);
+// addGraph([1.0, 0.0, 0.0, 1.0], [-0.5, -0.5, 0.5, 0.5]);
+// addGraph([0.0, 1.0, 0.0, 1.0], [-0.5, 0.5, 0.5, -0.5]);
+// addGraph([0.0, 0.0, 1.0, 1.0], [-0.8, -0.2, 0.8, 0.2]);
 
-renderGraphs();
+// renderGraphs();
