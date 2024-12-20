@@ -24,6 +24,9 @@ function createNewLine() {
   );
   addToggleFunction(lines[lines.length - 1], lines.length);
   addCreatePointFunction(lines[lines.length - 1], lines.length);
+  colors.forEach((color) => {
+    addChangeColorFunction(color, lines[lines.length - 1], lines.length);
+  });
   linesCounter.innerHTML =
     "You have <b>" + lines.length + "</b> lines on your graph";
   console.log("was a new line created?");
@@ -56,13 +59,19 @@ function getLineHTML(line) {
     "  </div>",
     '  <h3 id="title"><u>Color:</u></h3>',
     '  <div id="color_selector">',
-    '     <button class="color_button" style="background-color: red;">',
+    '     <button class="color_button"',
+    '     id="Red-button-' + lines.length + '"', //red button
+    '     style="background-color: red;">',
     "        " + (line.color == "Red" ? "X" : ""),
     "     </button>",
-    '     <button class="color_button" style="background-color: green;">',
+    '     <button class="color_button"',
+    '     id="Green-button-' + lines.length + '"', //green button
+    '     style="background-color: green;">',
     "        " + (line.color == "Green" ? "X" : ""),
     "     </button>",
-    '     <button class="color_button" style="background-color: blue;">',
+    '     <button class="color_button"',
+    '     id="Blue-button-' + lines.length + '"', //blue button
+    '     style="background-color: blue;">',
     "        " + (line.color == "Blue" ? "X" : ""),
     "     </button>",
     "  </div>",

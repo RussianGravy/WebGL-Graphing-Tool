@@ -48,4 +48,4 @@ while (x <= canvasWidth - spacing) {
 }
 
 ctx.font = "16px Arial";
-ctx.fillText("0", spacing - 10, canvasHeight - 20);
+ctx.fillText("0", spacing - 10, canvasHeight - 15);
