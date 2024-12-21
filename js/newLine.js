@@ -8,13 +8,19 @@ const linesCounter = document.getElementById("lines-counter");
  *   -  points: Array,
  *   -  toggle: Boolean
  */
-var lines = []; // array of line objects
+var lines = []; // array of line objects on the graph
 
-const colors = ["Red", "Blue", "Green"];
+const colors = ["Red", "Blue", "Green"]; // possible line colors
+
+//function to create a new line
 function createNewLine() {
+  const newColor = colors[Math.floor(Math.random() * colors.length)];
+  while (lines.length > 0 && newColor === lines[lines.length - 1].color) {
+    newColor = colors[Math.floor(Math.random() * colors.length)];
+  }
   lines.push({
     name: "Line " + (lines.length + 1),
-    color: colors[Math.floor(Math.random() * colors.length)],
+    color: newColor,
     points: [],
     toggle: false,
   });
@@ -32,7 +38,7 @@ function createNewLine() {
   console.log("was a new line created?");
   console.log(lines);
 }
-
+// html for line controls
 function getLineHTML(line) {
   return [
     '<div class="line" id="line-' + lines.length + '">',
