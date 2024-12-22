@@ -6,3 +6,37 @@
     /* border: solid 1px black; */
     width: 95%;
 }
+
+section {
+    display: flex;
+    flex-direction: column;
+    width: 50vw;
+    align-items: center;
+}
+
+canvas{
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 20px auto 0 auto;
+    aspect-ratio: 1/1;
+    width: 88%;
+}
+
+#graph-controls {
+    position: absolute;
+    margin-top: 13px;
+    top: 0;
+    right: 0;
+    width: fit-content;
+    height: fit-content;
+    /* border-radius: 5px;
+    background-color: #F9F9F9;
+    border: solid black 0.5px; */
+    padding: 10px;
+    z-index: 20;
+}
+
+#graph-controls input {
+    width: 80px;
+}

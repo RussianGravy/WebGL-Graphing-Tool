@@ -6,7 +6,10 @@
   </head>
   <body>
     <section id="graph-container">
-      <!-- <h1>Basic Example</h1> -->
+      <div id="graph-controls">
+        Step-size:
+        <input id="step-size-input" />
+      </div>
       <canvas id="gl-window"></canvas>
       <canvas id="graph-lines"></canvas>
     </section>
@@ -15,9 +18,9 @@
       <div id="lines-container"></div>
       <button onclick="createNewLine();" id="new-line-button">New Line</button>
     </section>
-    <script src="js/drawGraph.js"></script>
     <script src="js/glShaders.js"></script>
     <script src="js/newLine.js"></script>
     <script src="js/changeLineColor.js"></script>
+    <script src="js/drawGraph.js"></script>
   </body>
 </html>

@@ -9,6 +9,18 @@ const canvasHeight = canvasWidth;
 
 console.log(window.innerWidth, canvasWidth, canvasHeight);
 
+// user controls to edit the graph
+const stepInput = document.getElementById("step-size-input");
+
+console.log(stepInput);
+
+stepInput.addEventListener("change", (e) => {
+  console.log(e.target.value);
+  step_size = Number(e.target.value);
+  drawGraph();
+  renderGraphs();
+});
+
 // Line styles
 ctx.strokeStyle = "black";
 ctx.lineWidth = 1;
@@ -17,50 +29,58 @@ ctx.font = "16px Arial";
 ctx.textAlign = "center"; // Horizontal alignment
 const margin = 50;
 const spacing = 30;
+var step_size = 70; // user input
 
-//draw vertical axis
-ctx.beginPath();
-ctx.moveTo(margin, 0);
-ctx.lineTo(margin, canvasHeight - margin);
-ctx.stroke();
+drawGraph(); //main function call
 
-//draw horizontal axis
-ctx.beginPath();
-ctx.moveTo(margin, canvasHeight - margin);
-ctx.lineTo(canvasWidth, canvasHeight - margin);
-ctx.stroke();
+function drawGraph() {
+  //clear canvas
+  ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
-// Draw vertical lines
-var y = canvasHeight - margin - spacing;
-var counter = 70; //temp
-while (y >= spacing) {
+  //draw vertical axis
   ctx.beginPath();
-  ctx.moveTo(margin - 10, y);
-  ctx.lineTo(margin + 10, y);
+  ctx.moveTo(margin, 0);
+  ctx.lineTo(margin, canvasHeight - margin);
   ctx.stroke();
-  const number = counter; //temp
-  ctx.fillText(number, margin - 30, y + 5);
-  y -= spacing;
-  counter += 70; //temp
-}
 
-// Draw horizontal lines
-var counter = 70; //temp
-var x = margin + spacing;
-while (x <= canvasWidth - spacing) {
+  //draw horizontal axis
   ctx.beginPath();
-  ctx.moveTo(x, canvasHeight - margin - 10);
-  ctx.lineTo(x, canvasHeight - margin + 10);
+  ctx.moveTo(margin, canvasHeight - margin);
+  ctx.lineTo(canvasWidth, canvasHeight - margin);
   ctx.stroke();
-  const number = counter; //temp
-  drawTextAtAngle(ctx, number, x + 1, canvasHeight - margin + 31, -90);
-  //   ctx.fillText(number, x + 2, canvasHeight - margin + 28);
-  x += spacing;
-  counter += 70; //temp
-}
 
-//draw origin
-ctx.fillText("0", spacing - 10, canvasHeight - 15);
+  // Draw vertical lines
+  var y = canvasHeight - margin - spacing;
+  var counter = step_size; //temp
+  while (y >= spacing) {
+    ctx.beginPath();
+    ctx.moveTo(margin - 10, y);
+    ctx.lineTo(margin + 10, y);
+    ctx.stroke();
+    const number = counter; //temp
+    ctx.fillText(number, margin - 30, y + 5);
+    y -= spacing;
+    counter += step_size; //temp
+  }
+
+  // Draw horizontal lines
+  var x = margin + spacing;
+  var counter = step_size; //temp
+  while (x <= canvasWidth - spacing) {
+    ctx.beginPath();
+    ctx.moveTo(x, canvasHeight - margin - 10);
+    ctx.lineTo(x, canvasHeight - margin + 10);
+    ctx.stroke();
+    const number = counter; //temp
+    drawTextAtAngle(ctx, number, x + 1, canvasHeight - margin + 31, -90);
+    //   ctx.fillText(number, x + 2, canvasHeight - margin + 28);
+    x += spacing;
+    counter += step_size; //temp
+  }
+
+  //draw origin
+  ctx.fillText("0", spacing - 10, canvasHeight - 15);
+}
 
 function drawTextAtAngle(ctx, text, x, y, angle, options = {}) {
   const {

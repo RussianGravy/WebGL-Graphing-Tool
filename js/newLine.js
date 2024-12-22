@@ -14,7 +14,7 @@ const colors = ["Red", "Blue", "Green"]; // possible line colors
 
 //function to create a new line
 function createNewLine() {
-  const newColor = colors[Math.floor(Math.random() * colors.length)];
+  var newColor = colors[Math.floor(Math.random() * colors.length)];
   while (lines.length > 0 && newColor === lines[lines.length - 1].color) {
     newColor = colors[Math.floor(Math.random() * colors.length)];
   }
@@ -149,7 +149,7 @@ function addCreatePointFunction(line, index) {
   const y = document.getElementById("y-input-" + index);
   button.addEventListener("click", () => {
     //add point and graph it
-    const point = getFixedPoint(Number(x.value), Number(y.value));
+    const point = { x: Number(x.value), y: Number(y.value) }; //getFixedPoint(Number(x.value), Number(y.value))
     const color =
       line.color === "Red"
         ? [1.0, 0.0, 0.0, 1.0]
@@ -175,13 +175,10 @@ function addCreatePointFunction(line, index) {
   });
 }
 
-/*
- * Translates and scales points
- * to fit in webgl format.
- */
+// Translates and scales points to fit in webgl format.
 console.log(canvas.width);
 function getFixedPoint(x, y) {
-  const width = canvas.width;
+  const width = step_size * 19; //canvas.width
   const height = width;
   //format for webgl
   var new_x = (x / width) * 2 - 1;

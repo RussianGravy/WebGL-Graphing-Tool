@@ -81,12 +81,45 @@ function renderGraphs() {
     );
 
     // Upload the vertex data
-    const vertices = new Float32Array(graph.points);
+    console.log(graph.points);
+    console.log(fixAllPoints(graph.points));
+    const vertices = new Float32Array(fixAllPoints(graph.points)); //graph.points
     gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
 
     // Draw the graph
     gl.drawArrays(gl.LINE_STRIP, 0, graph.points.length / 2);
   }
+}
+
+//fixes all points to webgl format
+function fixAllPoints(points) {
+  const fixedPoints = [];
+  for (var i = 2; i < points.length; i += 2) {
+    const fixedPoint = getFixedPoint(points[i], points[i + 1]);
+    fixedPoints.push(fixedPoint.x, fixedPoint.y);
+  }
+  return [-1, -1, ...fixedPoints];
+}
+
+// Translates and scales points to fit in webgl format.
+console.log(canvas.width);
+function getFixedPoint(x, y) {
+  const width = step_size * 19; //canvas.width
+  const height = width;
+  //format for webgl
+  var new_x = (x / width) * 2 - 1;
+  var new_y = (y / height) * 2 - 1;
+  //truncate
+  new_x += "";
+  var end = new_x.length < 4 ? new_x.length : 4;
+  console.log(end);
+  // new_x = Number(new_x.substring(0, end));
+  new_y += "";
+  end = new_y.length < 4 ? new_y.length : 4;
+  console.log(end);
+  // new_y = Number(new_y.substring(0, end));
+
+  return { x: new_x, y: new_y };
 }
 
 // // Example usage
