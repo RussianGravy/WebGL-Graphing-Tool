@@ -8,7 +8,7 @@ function addChangeColorFunction(color, line, index) {
         ? [1.0, 0.0, 0.0, 1.0]
         : line.color === "Blue"
         ? [0.0, 0.0, 1.0, 1.0]
-        : [0.0, 1.0, 0.0, 1.0];
+        : [0.0, 0.5, 0.0, 1.0];
     console.log(color);
     addGraph(colorArray, line.points);
     renderGraphs();

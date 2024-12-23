@@ -11,14 +11,20 @@ gl.viewport(0, 0, canvas.width, canvas.height);
 // WebGL resources and shader setup
 const vertexShaderSource = `
   attribute vec2 aPosition;
+  uniform vec2 uResolution;
+  uniform float uStepSize;
+
   void main() {
-    gl_Position = vec4(aPosition, 0.0, 1.0);
+    // Scale the position to clip space
+    vec2 clipSpace = (aPosition / uResolution) * 2.0 - 1.0;
+    gl_Position = vec4(clipSpace * vec2(1, 1), 0.0, 1.0);
   }
 `;
 
 const fragShaderSource = `
   precision mediump float;
   uniform vec4 uLineColor;
+
   void main() {
     gl_FragColor = uLineColor;
   }
@@ -51,25 +57,25 @@ gl.useProgram(program);
 
 // Position attribute
 const positionLocation = gl.getAttribLocation(program, "aPosition");
+
+// Uniform locations
+const colorLocation = gl.getUniformLocation(program, "uLineColor");
+const resolutionLocation = gl.getUniformLocation(program, "uResolution");
+
 const vertexBuffer = gl.createBuffer();
 gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-gl.enableVertexAttribArray(positionLocation);
-gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
-
-// Color uniform
-const colorLocation = gl.getUniformLocation(program, "uLineColor");
 
 // Array to store multiple graphs
 const graphs = [];
 
 function addGraph(color, points) {
-  graphs.push({ color: color, points: [-1, -1, ...points] });
-  console.log("All Graphs: ", graphs);
+  console.log("fixed points");
+  graphs.push({ color, points: [-1, -1, ...points] });
 }
 
 function renderGraphs() {
   gl.clear(gl.COLOR_BUFFER_BIT);
-  console.log(graphs);
+
   for (const graph of graphs) {
     // Set the line color
     gl.uniform4f(
@@ -80,31 +86,91 @@ function renderGraphs() {
       graph.color[3]
     );
 
-    // Upload the vertex data
-    console.log(graph.points);
-    console.log(fixAllPoints(graph.points));
-    const vertices = new Float32Array(fixAllPoints(graph.points)); //graph.points
-    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+    // Set resolution
+    gl.uniform2f(resolutionLocation, step_size * 20, step_size * 20); // scales to match the step size
 
-    // Draw the graph
-    gl.drawArrays(gl.LINE_STRIP, 0, graph.points.length / 2);
+    const vertices = [];
+    const thickness = line_width * (step_size / 70); // scales to match the step size
+
+    for (let i = 0; i < graph.points.length - 2; i += 2) {
+      const x1 = graph.points[i];
+      const y1 = graph.points[i + 1];
+      const x2 = graph.points[i + 2];
+      const y2 = graph.points[i + 3];
+
+      const dx = y2 - y1;
+      const dy = x1 - x2;
+      const len = Math.sqrt(dx * dx + dy * dy);
+      const offsetX = ((dx / len) * thickness) / 2;
+      const offsetY = ((dy / len) * thickness) / 2;
+
+      console.log(graph.points[i + 3], y2, offsetY, y2 - offsetY);
+      console.log(offsetX);
+      console.log(
+        x1 - offsetX,
+        y1 - offsetY,
+        x1 + offsetX,
+        y1 + offsetY,
+        x2 - offsetX,
+        y2 - offsetY,
+
+        x1 + offsetX,
+        y1 + offsetY,
+        x2 - offsetX,
+        y2 - offsetY,
+        x2 + offsetX,
+        y2 + offsetY
+      );
+      // Add two triangles for the thick line
+      vertices.push(
+        x1 - offsetX,
+        y1 - offsetY,
+        x1 + offsetX,
+        y1 + offsetY,
+        x2 - offsetX,
+        y2 - offsetY,
+
+        x1 + offsetX,
+        y1 + offsetY,
+        x2 - offsetX,
+        y2 - offsetY,
+        x2 + offsetX,
+        y2 + offsetY
+      );
+    }
+
+    const vertexData = new Float32Array(vertices);
+    gl.bufferData(gl.ARRAY_BUFFER, vertexData, gl.STATIC_DRAW);
+
+    gl.enableVertexAttribArray(positionLocation);
+    gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+    // Draw the triangles
+    gl.drawArrays(gl.TRIANGLES, 0, vertexData.length / 2);
   }
 }
+
+// Example usage
+gl.clearColor(1.0, 1.0, 1.0, 1.0);
+
+/*
+ * Helper functions no longer useful.
+ * Handled inside shader.
+ */
 
 //fixes all points to webgl format
 function fixAllPoints(points) {
   const fixedPoints = [];
   for (var i = 2; i < points.length; i += 2) {
     const fixedPoint = getFixedPoint(points[i], points[i + 1]);
-    fixedPoints.push(fixedPoint.x, fixedPoint.y);
+    fixedPoints.push(Number(fixedPoint.x), Number(fixedPoint.y));
   }
   return [-1, -1, ...fixedPoints];
 }
 
 // Translates and scales points to fit in webgl format.
-console.log(canvas.width);
 function getFixedPoint(x, y) {
-  const width = step_size * 19; //canvas.width
+  const width = step_size * 20; //canvas.width
   const height = width;
   //format for webgl
   var new_x = (x / width) * 2 - 1;
@@ -118,14 +184,5 @@ function getFixedPoint(x, y) {
   end = new_y.length < 4 ? new_y.length : 4;
   console.log(end);
   // new_y = Number(new_y.substring(0, end));
-
   return { x: new_x, y: new_y };
 }
-
-// // Example usage
-gl.clearColor(1.0, 1.0, 1.0, 1.0);
-// addGraph([1.0, 0.0, 0.0, 1.0], [-0.5, -0.5, 0.5, 0.5]);
-// addGraph([0.0, 1.0, 0.0, 1.0], [-0.5, 0.5, 0.5, -0.5]);
-// addGraph([0.0, 0.0, 1.0, 1.0], [-0.8, -0.2, 0.8, 0.2]);
-
-// renderGraphs();

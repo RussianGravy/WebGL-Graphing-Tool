@@ -155,7 +155,7 @@ function addCreatePointFunction(line, index) {
         ? [1.0, 0.0, 0.0, 1.0]
         : line.color === "Blue"
         ? [0.0, 0.0, 1.0, 1.0]
-        : [0.0, 1.0, 0.0, 1.0];
+        : [0.0, 0.5, 0.0, 1.0];
     line.points.push(point.x, point.y);
     addGraph(color, line.points);
     renderGraphs();

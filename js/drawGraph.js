@@ -9,18 +9,6 @@ const canvasHeight = canvasWidth;
 
 console.log(window.innerWidth, canvasWidth, canvasHeight);
 
-// user controls to edit the graph
-const stepInput = document.getElementById("step-size-input");
-
-console.log(stepInput);
-
-stepInput.addEventListener("change", (e) => {
-  console.log(e.target.value);
-  step_size = Number(e.target.value);
-  drawGraph();
-  renderGraphs();
-});
-
 // Line styles
 ctx.strokeStyle = "black";
 ctx.lineWidth = 1;
@@ -29,7 +17,6 @@ ctx.font = "16px Arial";
 ctx.textAlign = "center"; // Horizontal alignment
 const margin = 50;
 const spacing = 30;
-var step_size = 70; // user input
 
 drawGraph(); //main function call
 
