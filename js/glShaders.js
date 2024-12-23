@@ -104,23 +104,6 @@ function renderGraphs() {
       const offsetX = ((dx / len) * thickness) / 2;
       const offsetY = ((dy / len) * thickness) / 2;
 
-      console.log(graph.points[i + 3], y2, offsetY, y2 - offsetY);
-      console.log(offsetX);
-      console.log(
-        x1 - offsetX,
-        y1 - offsetY,
-        x1 + offsetX,
-        y1 + offsetY,
-        x2 - offsetX,
-        y2 - offsetY,
-
-        x1 + offsetX,
-        y1 + offsetY,
-        x2 - offsetX,
-        y2 - offsetY,
-        x2 + offsetX,
-        y2 + offsetY
-      );
       // Add two triangles for the thick line
       vertices.push(
         x1 - offsetX,
