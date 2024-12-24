@@ -10,24 +10,23 @@ gl.viewport(0, 0, canvas.width, canvas.height);
 
 // WebGL resources and shader setup
 const vertexShaderSource = `
-  attribute vec2 aPosition;
-  uniform vec2 uResolution;
-  uniform float uStepSize;
+attribute vec2 aPosition;
+uniform vec2 uResolution;
 
-  void main() {
-    // Scale the position to clip space
+void main() {
     vec2 clipSpace = (aPosition / uResolution) * 2.0 - 1.0;
-    gl_Position = vec4(clipSpace * vec2(1, 1), 0.0, 1.0);
-  }
+    gl_Position = vec4(clipSpace * vec2(1, 1), 0.0, 1.0); // Flip Y-axis for WebGL coordinates
+}
 `;
 
 const fragShaderSource = `
-  precision mediump float;
-  uniform vec4 uLineColor;
+precision mediump float;
 
-  void main() {
+uniform vec4 uLineColor;
+
+void main() {
     gl_FragColor = uLineColor;
-  }
+}
 `;
 
 function compileShader(gl, source, type) {
@@ -104,6 +103,8 @@ function renderGraphs() {
       const offsetX = ((dx / len) * thickness) / 2;
       const offsetY = ((dy / len) * thickness) / 2;
 
+      drawCorner(x1, y1, x2, y2, vertices, thickness);
+
       // Add two triangles for the thick line
       vertices.push(
         x1 - offsetX,
@@ -133,13 +134,50 @@ function renderGraphs() {
   }
 }
 
+function drawCorner(x1, y1, x2, y2, vertices, thickness) {
+  const startAngle = Math.atan2(y2 - y1, x2 - x1); // Angle of the line
+  const radius = thickness / 2; // Radius for semicircles
+  const numSegments = 20; // Number of segments for smoothness
+
+  // Generate the semicircle at the start
+  for (let i = 0; i < numSegments; i++) {
+    const theta1 = startAngle - Math.PI + (Math.PI / numSegments) * i;
+    const theta2 = startAngle - Math.PI + (Math.PI / numSegments) * (i + 1);
+
+    const offsetX1 = Math.cos(theta1) * radius;
+    const offsetY1 = Math.sin(theta1) * radius;
+
+    const offsetX2 = Math.cos(theta2) * radius;
+    const offsetY2 = Math.sin(theta2) * radius;
+
+    // Triangle for the current segment
+    vertices.push(x1, y1); // Center of the semicircle
+    vertices.push(x1 + offsetX1, y1 + offsetY1); // First point on the perimeter
+    vertices.push(x1 + offsetX2, y1 + offsetY2); // Next point on the perimeter
+  }
+
+  // Generate the semicircle at the end
+  for (let i = 0; i < numSegments; i++) {
+    const theta1 = startAngle + (Math.PI / numSegments) * i;
+    const theta2 = startAngle + (Math.PI / numSegments) * (i + 1);
+
+    const offsetX1 = Math.cos(theta1) * radius;
+    const offsetY1 = Math.sin(theta1) * radius;
+
+    const offsetX2 = Math.cos(theta2) * radius;
+    const offsetY2 = Math.sin(theta2) * radius;
+
+    // Triangle for the current segment
+    vertices.push(x2, y2); // Center of the semicircle
+    vertices.push(x2 + offsetX1, y2 + offsetY1); // First point on the perimeter
+    vertices.push(x2 + offsetX2, y2 + offsetY2); // Next point on the perimeter
+  }
+}
+
 // Example usage
 gl.clearColor(1.0, 1.0, 1.0, 1.0);
 
-/*
- * Helper functions no longer useful.
- * Handled inside shader.
- */
+// Helper functions no longer useful. Handled inside shader.
 
 //fixes all points to webgl format
 function fixAllPoints(points) {
