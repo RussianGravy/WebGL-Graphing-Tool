@@ -39,7 +39,7 @@ function drawGraph() {
   // Draw vertical lines
   var y = canvasHeight - margin - spacing;
   var counter = step_size; //temp
-  while (y >= 0) {
+  while (y >= margin) {
     ctx.beginPath();
     ctx.moveTo(margin - 10, y);
     ctx.lineTo(margin + 10, y);
@@ -53,7 +53,7 @@ function drawGraph() {
   // Draw horizontal lines
   var x = margin + spacing;
   var counter = step_size; //temp
-  while (x <= canvasWidth) {
+  while (x <= canvasWidth - margin) {
     ctx.beginPath();
     ctx.moveTo(x, canvasHeight - margin - 10);
     ctx.lineTo(x, canvasHeight - margin + 10);

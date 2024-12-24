@@ -138,35 +138,27 @@ function drawCorner(x1, y1, x2, y2, vertices, thickness) {
   const startAngle = Math.atan2(y2 - y1, x2 - x1); // Angle of the line
   const radius = thickness / 2; // Radius for semicircles
   const numSegments = 20; // Number of segments for smoothness
-
   // Generate the semicircle at the start
   for (let i = 0; i < numSegments; i++) {
     const theta1 = startAngle - Math.PI + (Math.PI / numSegments) * i;
     const theta2 = startAngle - Math.PI + (Math.PI / numSegments) * (i + 1);
-
     const offsetX1 = Math.cos(theta1) * radius;
     const offsetY1 = Math.sin(theta1) * radius;
-
     const offsetX2 = Math.cos(theta2) * radius;
     const offsetY2 = Math.sin(theta2) * radius;
-
     // Triangle for the current segment
     vertices.push(x1, y1); // Center of the semicircle
     vertices.push(x1 + offsetX1, y1 + offsetY1); // First point on the perimeter
     vertices.push(x1 + offsetX2, y1 + offsetY2); // Next point on the perimeter
   }
-
   // Generate the semicircle at the end
   for (let i = 0; i < numSegments; i++) {
     const theta1 = startAngle + (Math.PI / numSegments) * i;
     const theta2 = startAngle + (Math.PI / numSegments) * (i + 1);
-
     const offsetX1 = Math.cos(theta1) * radius;
     const offsetY1 = Math.sin(theta1) * radius;
-
     const offsetX2 = Math.cos(theta2) * radius;
     const offsetY2 = Math.sin(theta2) * radius;
-
     // Triangle for the current segment
     vertices.push(x2, y2); // Center of the semicircle
     vertices.push(x2 + offsetX1, y2 + offsetY1); // First point on the perimeter
